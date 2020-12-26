@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load mptt_tags %}
+<meta property="og:title" content="Ваши ответы на вопросы бота" />
+<meta property="og:description" content="Перешлите их в чат для того, чтобы другим пользователям легче было ответить на Ваши вопросы" />
+
+</head>
+<body>
+  {% autoescape off %}
+
+  <div id="categories-tree">
+    {% full_tree_for_model chattree.ChatNode as chatnodes %}
+
+    {% for node, structure in chatnodes|tree_info %}
+
+      {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+        {{ node }}
+        {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+
+      {% endfor %}
+  </div>
+
+  {% endautoescape %}
+
+</body>
+
+</html>

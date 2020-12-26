@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load mptt_tags %}
+<meta property="og:title" content="Ваши ответы на вопросы бота" />
+<meta property="og:description" content="Перешлите их в чат для того, чтобы другим пользователям легче было ответить на Ваши вопросы" />
+
+</head>
+<body>
+  {% autoescape off %} {{ object.get_ancestors|tree_path:" <br /><br /> > " }} <br /><br /> > {{ object }} {% endautoescape %}
+</body>
+
+</html>
