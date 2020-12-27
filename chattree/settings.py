@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from manage import env_var
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,28 +23,29 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../', 'static'))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 't9s%ja1ut^def)j$o(o9fmw0q40q29p)!s%g#l*^q8l*mcw@l5'
+SECRET_KEY = env_var('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env_var('DEBUG')
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'chatbotsadmin.dreamhosters.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', env_var('PROD_HTTP_HOSTNAME')]
 
-ADMINS = [('Ivan K', 'the.paper.men@gmail.com'), ]
+ADMINS = [('I K', env_var('ADMIN_EMAIL')), ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
-ADMIN_EMAIL='the.paper.men@gmail.com'
-SERVER_EMAIL='feedback@mansys.dreamhosters.com'
-DEFAULT_FROM_EMAIL='feedback@mansys.dreamhosters.com'
-EMAIL_HOST='mail.mansys.dreamhosters.com'
-EMAIL_HOST_USER='feedback@mansys.dreamhosters.com'
-EMAIL_HOST_PASSWORD='cnqK^BK^'
+ADMIN_EMAIL = env_var('ADMIN_EMAIL')
+SERVER_EMAIL = env_var('SERVER_EMAIL')
+DEFAULT_FROM_EMAIL = env_var('DEFAULT_FROM_EMAIL')
+EMAIL_HOST = env_var('EMAIL_HOST')
+EMAIL_HOST_USER = env_var('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env_var('EMAIL_HOST_PASSWORD')
 
 # Application definition
 
-HOST_NAME = 'chatbotsadmin.dreamhosters.com'
+HOST_NAME = env_var('PROD_HTTP_HOSTNAME')
 
 GRAPPELLI_ADMIN_TITLE = 'Администрирование ботов Комитета «Гражданское содействие»'
 
@@ -102,14 +104,12 @@ WSGI_APPLICATION = 'chattree.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chatbotsadmindb',
-        'USER': 'fabius_mysql',
-        'PASSWORD': 'z0Nglongr',
-        'HOST': 'mysql.ant.cloudkill.org',
-	'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME', '{{ project_name }}'),
+        'USER': os.getenv('DATABASE_USER', '{{ project_name }}'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+        'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
@@ -152,12 +152,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOG_VIEWER_FILES = ['logfile_debug', ]
-LOG_VIEWER_FILES_PATTERN = 'logfile*'
-LOG_VIEWER_FILES_DIR = os.path.join('/home/chatbotsadmin/chatbotsadmin.dreamhosters.com/projects/chattree/chattree/')
-LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
-LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
-LOG_VIEWER_PATTERNS = [']OFNI[', ']GUBED[', ']GNINRAW[', ']RORRE[', ']LACITIRC[']
 
 LOGGING = {
     'version': 1,
