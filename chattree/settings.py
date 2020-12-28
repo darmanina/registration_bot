@@ -28,6 +28,8 @@ SECRET_KEY = env_var('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_var('DEBUG')
 TEMPLATE_DEBUG = DEBUG
+CSRF_COOKIE_SECURE = env_var('DEBUG')
+
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', env_var('PROD_HTTP_HOSTNAME')]
 
