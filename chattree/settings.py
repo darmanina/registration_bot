@@ -105,9 +105,9 @@ WSGI_APPLICATION = 'chattree.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DATABASE_NAME', '{{ project_name }}'),
-        'USER': os.getenv('DATABASE_USER', '{{ project_name }}'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+        'NAME': env_var('DB_NAME'),
+        'USER': env_var('DB_USER'),
+        'PASSWORD': env_var('DB_PASSWORD'),
         'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
         'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
