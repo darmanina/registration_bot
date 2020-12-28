@@ -8,9 +8,11 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
 
 import os
+from manage import read_env
 
 from django.core.wsgi import get_wsgi_application
 
+read_env()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chattree.settings')
 
 application = get_wsgi_application()
