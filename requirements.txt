@@ -7,7 +7,10 @@ django-mptt-admin==2.0.0
 django-db-logger==0.1.10
 django-log-viewer==1.1.1
 mysql-connector==2.2.9
+django-rest-framework==0.1.0
+python-telegram-bot==12.8
 pytz==2020.1
 psycopg2==2.8.6
 six==1.15.0
 sqlparse==0.3.1
+django-simple-history==2.11.0

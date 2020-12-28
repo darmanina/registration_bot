@@ -22,18 +22,18 @@ class ChatTreeAppConfig(AppConfig):
     name = 'chattree'
     verbose_name = "Администрирование ботов Комитета «Гражданское содействие»"
 
+    # def ready(self):
+    #
+    #     from chattree.models import Bot as ChatTreeBot
+    #
+    #     for bot_token in ChatTreeBot.objects.all().values_list('token', flat=True):
+    #
+    #         # Need this if in case if AppConfig.ready() runs twice
+    #         if bot_token not in chattree_bot_dispatchers:
+    #
+    #             bot_dispatcher = setup_bot_and_webhook(bot_token)
+    #             chattree_bot_dispatchers.update({bot_token: bot_dispatcher})
+    #             logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
     def ready(self):
-        
-        from chattree.models import Bot as ChatTreeBot
-
-        for bot_token in ChatTreeBot.objects.all().values_list('token', flat=True):
-
-            # Need this if in case if AppConfig.ready() runs twice
-            if bot_token not in chattree_bot_dispatchers:
-
-                bot_dispatcher = setup_bot_and_webhook(bot_token)
-                chattree_bot_dispatchers.update({bot_token: bot_dispatcher})
-                logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
-    #def ready(self):
-    #    pass
+       pass
 
