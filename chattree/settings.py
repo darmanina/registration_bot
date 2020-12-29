@@ -122,6 +122,7 @@ DATABASES = {
         'USER': env_var('DB_USER'),
         'PASSWORD': env_var('DB_PASSWORD'),
         'HOST': '127.0.0.1',
+        'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
         },
