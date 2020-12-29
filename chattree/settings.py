@@ -203,7 +203,7 @@ LOGGING = {
     },
     'loggers': {
         'db': {
-            'handlers': ['db_log'],
+            'handlers': ['rabbit'],
             'level': 'DEBUG'
         }
     }

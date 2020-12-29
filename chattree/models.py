@@ -44,7 +44,7 @@ class Bot(models.Model):
                                        ' использованием <a href="https://t.me/BotFather">'
                                        'https://t.me/BotFather</a>', validators=[validate_token])
 
-    is_active = models.BooleanField(default=True, verbose_name='Бот включён/выключен')
+    is_active = models.BooleanField(default=True, verbose_name='Бот включён')
 
     def __str__(self):
         return '{0} (вопросов {1})'.format(self.name, self.chat_node.get_descendants().count())
