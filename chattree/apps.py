@@ -2,6 +2,8 @@ from django.apps import AppConfig
 from django.conf import settings
 import logging
 
+from telegram import TelegramError
+
 logger = logging.getLogger('db')
 
 chattree_bot_dispatchers = dict()
@@ -30,10 +32,12 @@ class ChatTreeAppConfig(AppConfig):
 
             # Need this if in case if AppConfig.ready() runs twice
             if bot_token not in chattree_bot_dispatchers:
-
-                bot_dispatcher = setup_bot_and_webhook(bot_token)
-                chattree_bot_dispatchers.update({bot_token: bot_dispatcher})
-                logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
+                try:
+                    bot_dispatcher = setup_bot_and_webhook(bot_token)
+                    chattree_bot_dispatchers.update({bot_token: bot_dispatcher})
+                    logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
+                except TelegramError:
+                    pass
 
     #def ready(self):
     #   pass

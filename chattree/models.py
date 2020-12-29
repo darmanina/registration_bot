@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import CASCADE
 from django.db.models import SET_NULL
@@ -7,7 +8,24 @@ from mptt.models import MPTTModel, TreeForeignKey
 # from simple_history import register
 import logging
 
+from telegram import TelegramError
+
 logger = logging.getLogger('db')
+
+
+def validate_token(value):
+    try:
+        from chattree.apps import setup_bot_and_webhook, chattree_bot_dispatchers
+
+        if value not in chattree_bot_dispatchers:
+
+            bot_dispatcher = setup_bot_and_webhook(value)
+            chattree_bot_dispatchers.update({value: bot_dispatcher})
+            logger.debug('on_save_chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
+
+    except TelegramError as e:
+        raise ValidationError('Не удаётся зарегистрировать вебхук с'
+                              ' этим токеном в телеграм:{0}!'.format(e))
 
 
 class Bot(models.Model):
@@ -24,7 +42,7 @@ class Bot(models.Model):
                                        ' может сломать Вашего бота.</a>\n Получить'
                                        ' токен для нового бота телеграм <br />можно с'
                                        ' использованием <a href="https://t.me/BotFather">'
-                                       'https://t.me/BotFather</a>')
+                                       'https://t.me/BotFather</a>', validators=[validate_token])
 
     def __str__(self):
         return '{0} (вопросов {1})'.format(self.name, self.chat_node.get_descendants().count())
