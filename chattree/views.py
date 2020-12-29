@@ -27,17 +27,17 @@ class UpdateBot(APIView):
         try:
             bot_dispatcher = chattree_bot_dispatchers[token]
         except KeyError:
-            raise Exception('There is no active bot with token: {0},'
-                            ' chattree_bot_dispatchers: {1}'.format(token, chattree_bot_dispatchers))
-            # return Http404()
-        else:
-            request_json = request.body.decode('UTF-8')
-            update = Update.de_json(json.loads(request_json), bot_dispatcher.bot)
-            logger.debug(update)
-            bot_dispatcher.process_update(update)
-            response = Response({'code': 200, })
+            # raise Exception('There is no active bot with token: {0},'
+            #                 ' chattree_bot_dispatchers: {1}'.format(token, chattree_bot_dispatchers))
+            bot_dispatcher = setup_bot(token=token)
 
-            return response
+        request_json = request.body.decode('UTF-8')
+        update = Update.de_json(json.loads(request_json), bot_dispatcher.bot)
+        logger.debug(update)
+        bot_dispatcher.process_update(update)
+        response = Response({'code': 200, })
+
+        return response
 
 
 class ChatNodeDetailView(DetailView):
