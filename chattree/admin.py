@@ -37,7 +37,7 @@ class BotAdmin(admin.ModelAdmin):
         }),
         ('Дополнительно', {
             'classes': ('grp-collapse grp-closed',),
-            'fields' : ('chat_node', 'token', ),
+            'fields' : ('chat_node', 'token', 'is_active'),
         }),
     )
 
