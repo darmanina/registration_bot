@@ -36,8 +36,8 @@ class ChatTreeAppConfig(AppConfig):
                     bot_dispatcher = setup_bot_and_webhook(bot_token[0])
                     chattree_bot_dispatchers.update({bot_token[0]: bot_dispatcher})
                     logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
-                except TelegramError:
-                    pass
+                except TelegramError as e:
+                    raise e
 
     #def ready(self):
     #   pass
