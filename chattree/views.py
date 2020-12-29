@@ -27,7 +27,9 @@ class UpdateBot(APIView):
         try:
             bot_dispatcher = chattree_bot_dispatchers[token]
         except KeyError:
-            return Http404()
+            raise Exception('There is no active bot with token: {0},'
+                            ' chattree_bot_dispatchers: {1}'.format(token, chattree_bot_dispatchers))
+            # return Http404()
         else:
             request_json = request.body.decode('UTF-8')
             update = Update.de_json(json.loads(request_json), bot_dispatcher.bot)
