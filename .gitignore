@@ -11,3 +11,4 @@ chattree/static/**
 chattree/media/files/**
 debug.log
 debug.log.*
+db.sqlite3
