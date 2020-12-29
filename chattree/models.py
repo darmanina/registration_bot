@@ -53,11 +53,15 @@ class Bot(models.Model):
         super().save(*args, **kwargs)
         from chattree.apps import setup_bot_and_webhook, chattree_bot_dispatchers
 
-        if self.token not in chattree_bot_dispatchers:
+        if self.is_active and self.token not in chattree_bot_dispatchers:
 
             bot_dispatcher = setup_bot_and_webhook(self.token)
             chattree_bot_dispatchers.update({self.token: bot_dispatcher})
             logger.debug('on_save_chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
+
+        if not self.is_active and self.token in chattree_bot_dispatchers:
+            bot_dispatcher = chattree_bot_dispatchers[self.token]
+            bot_dispatcher.bot.delete_webhook()
 
     class Meta:
         # unique_together = (('parent', 'slug',))
