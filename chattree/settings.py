@@ -185,6 +185,26 @@ LOGGING = {
             #'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
             'class': 'logging.NullHandler',
             },
+        'rabbit': {
+            'level': 'DEBUG',
+            'class': 'python_logging_rabbitmq.RabbitMQHandler',
+            'host': 'localhost',
+            'port': 5672,
+            'username': env_var('RABBITMQ_USER'),
+            'password': env_var('RABBITMQ_PASSWORD'),
+            'exchange': 'log',
+            'declare_exchange': False,
+            'connection_params': {
+                'virtual_host': env_var('RABBITMQ_VHOST'),
+                'connection_attempts': 3,
+                'socket_timeout': 5000
+            },
+            'fields': {
+                'source': 'MainAPI',
+                'env': 'production'
+            },
+            'fields_under_root': True
+        }
     },
     'loggers': {
         'db': {

@@ -25,7 +25,7 @@ def validate_token(value):
 
     except TelegramError as e:
         raise ValidationError('Не удаётся зарегистрировать вебхук с'
-                              ' этим токеном в телеграм:{0}!'.format(e))
+                              ' этим токеном в телеграм: {0}!'.format(e))
 
 
 class Bot(models.Model):
