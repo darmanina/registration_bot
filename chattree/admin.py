@@ -29,6 +29,7 @@ class ChatNodeInlineAdmin(admin.StackedInline):
             formfield.widget = forms.Textarea(attrs=formfield.widget.attrs)
         return formfield
 
+
 class BotAdmin(admin.ModelAdmin):
     fieldsets = (
         ('', {
