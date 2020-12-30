@@ -19,9 +19,9 @@ from telegram.ext import Dispatcher
 import logging
 import asyncio
 from datetime import datetime
-from chatbase import Message
+import amplitude
 
-
+amplitude_logger = amplitude.AmplitudeLogger(api_key=settings.AMPLITUDE_API_KEY)
 logger = logging.getLogger('db')
 
 
@@ -48,13 +48,25 @@ def log_exception(function):
 def save_message_history(user, message, chat_node_pk, bot_pk):
     from chattree.models import ChatHistory
 
-    msg = Message(api_key=settings.CHATBASE_API_KEY,
-                  platform="telegram",
-                  version="0.1",
-                  user_id='.'.join([user.id, user.first_name, ]),
-                  message=message,
-                  intent="ответ")
-    resp = msg.send()
+    username = getattr(user, 'username', None)
+    # logger.debug('hasattr(user, "username"): {0}'.format(hasattr(user, 'username')))
+    last_name = getattr(user, 'last_name', None)
+
+    event_args = {'user_id': user.id,
+                  'user_first_name': user.first_name,
+                  'message': message,
+                  'last_name': last_name,
+                  'username': username,
+                  'language_code': user.language_code,
+                  'chat_id': message.chat.id,
+                  }
+    #              user_id='.'.join([user.id, user.first_name, ]),
+
+
+    event = amplitude_logger.create_event(**event_args)
+
+    # send event to amplitude
+    amplitude_logger.log_event(event)
 
     return
     logger.debug('===== save_message_history: START =====')

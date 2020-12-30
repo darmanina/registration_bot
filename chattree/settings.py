@@ -25,7 +25,7 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../', 'static'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env_var('SECRET_KEY')
 
-CHATBASE_API_KEY = env_var('CHATBASE_API_KEY')
+AMPLITUDE_API_KEY = env_var('AMPLITUDE_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_var('DEBUG')
@@ -188,6 +188,12 @@ LOGGING = {
             #'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
             'class': 'logging.NullHandler',
             },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+
         'rabbit': {
             'level': 'DEBUG',
             'class': 'python_logging_rabbitmq.RabbitMQHandlerOneWay',
