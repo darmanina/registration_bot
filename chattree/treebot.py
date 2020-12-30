@@ -46,13 +46,13 @@ def log_exception(function):
 
 @log_exception
 def save_message_history(user, message, chat_node_pk, bot_pk):
-    from chattree.models import ChatHistory
+    
+    try:
+        username = getattr(user, 'username', None)
+        # logger.debug('hasattr(user, "username"): {0}'.format(hasattr(user, 'username')))
+        last_name = getattr(user, 'last_name', None)
 
-    username = getattr(user, 'username', None)
-    # logger.debug('hasattr(user, "username"): {0}'.format(hasattr(user, 'username')))
-    last_name = getattr(user, 'last_name', None)
-
-    event_args = {'user_id': user.id,
+        event_args = {'user_id': user.id,
                   'user_first_name': user.first_name,
                   'message': message,
                   'last_name': last_name,
@@ -60,13 +60,15 @@ def save_message_history(user, message, chat_node_pk, bot_pk):
                   'language_code': user.language_code,
                   'chat_id': message.chat.id,
                   }
-    #              user_id='.'.join([user.id, user.first_name, ]),
+        #              user_id='.'.join([user.id, user.first_name, ]),
 
 
-    event = amplitude_logger.create_event(**event_args)
+        event = amplitude_logger.create_event(**event_args)
 
-    # send event to amplitude
-    amplitude_logger.log_event(event)
+        # send event to amplitude
+        amplitude_logger.log_event(event)
+    except Exception as e:
+        logger.debug(e)
 
     return
     logger.debug('===== save_message_history: START =====')
