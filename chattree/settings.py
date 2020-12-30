@@ -25,6 +25,8 @@ STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../', 'static'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env_var('SECRET_KEY')
 
+CHATBASE_API_KEY = env_var('CHATBASE_API_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_var('DEBUG')
 TEMPLATE_DEBUG = DEBUG
@@ -162,6 +164,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# memcached_listen: 127.0.0.1
+# memcached_port: 11211
+# memcached_user: nobody
+# memcached_max_memory_mb: 64
+# memcached_max_connections: 1024
+
 
 LOGGING = {
     'version': 1,
@@ -182,12 +190,12 @@ LOGGING = {
             },
         'rabbit': {
             'level': 'DEBUG',
-            'class': 'python_logging_rabbitmq.RabbitMQHandler',
+            'class': 'python_logging_rabbitmq.RabbitMQHandlerOneWay',
             'host': 'localhost',
             'port': 5672,
             'username': env_var('RABBITMQ_USER'),
             'password': env_var('RABBITMQ_PASSWORD'),
-            'exchange': 'log',
+            # 'exchange': 'log',
             'declare_exchange': False,
             'connection_params': {
                 'virtual_host': env_var('RABBITMQ_VHOST'),
@@ -198,12 +206,12 @@ LOGGING = {
                 'source': 'MainAPI',
                 'env': 'production'
             },
-            'fields_under_root': True
+            'fields_under_root': False
         }
     },
     'loggers': {
         'db': {
-            'handlers': ['rabbit'],
+            'handlers': ['db_log'],
             'level': 'DEBUG'
         }
     }

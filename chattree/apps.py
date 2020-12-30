@@ -5,7 +5,6 @@ import logging
 from telegram import TelegramError
 
 logger = logging.getLogger('db')
-
 chattree_bot_dispatchers = dict()
 
 

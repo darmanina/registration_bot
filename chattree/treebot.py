@@ -19,6 +19,8 @@ from telegram.ext import Dispatcher
 import logging
 import asyncio
 from datetime import datetime
+from chatbase import Message
+
 
 logger = logging.getLogger('db')
 
@@ -45,6 +47,15 @@ def log_exception(function):
 @log_exception
 def save_message_history(user, message, chat_node_pk, bot_pk):
     from chattree.models import ChatHistory
+
+    msg = Message(api_key=settings.CHATBASE_API_KEY,
+                  platform="telegram",
+                  version="0.1",
+                  user_id='.'.join([user.id, user.first_name, ]),
+                  message=message,
+                  intent="ответ")
+    resp = msg.send()
+
     return
     logger.debug('===== save_message_history: START =====')
 
