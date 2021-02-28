@@ -217,7 +217,7 @@ LOGGING = {
     },
     'loggers': {
         'db': {
-            'handlers': ['db_log'],
+            'handlers': ['file'],
             'level': 'DEBUG'
         }
     }

@@ -23,21 +23,21 @@ class ChatTreeAppConfig(AppConfig):
     name = 'chattree'
     verbose_name = "Администрирование ботов Комитета «Гражданское содействие»"
 
-    def ready(self):
+    #def ready(self):
 
-        from chattree.models import Bot as ChatTreeBot
+        #from chattree.models import Bot as ChatTreeBot
 
-        for bot_token in ChatTreeBot.objects.all().values_list('token', 'is_active'):
+        #for bot_token in ChatTreeBot.objects.all().values_list('token', 'is_active'):
 
             # Need this if in case if AppConfig.ready() runs twice
-            if bot_token[0] not in chattree_bot_dispatchers and bot_token[1]:
-                try:
-                    bot_dispatcher = setup_bot_and_webhook(bot_token[0])
-                    chattree_bot_dispatchers.update({bot_token[0]: bot_dispatcher})
-                    logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
-                except TelegramError as e:
-                    raise e
+        #    if bot_token[0] not in chattree_bot_dispatchers and bot_token[1]:
+        #        try:
+        #            bot_dispatcher = setup_bot_and_webhook(bot_token[0])
+        #            chattree_bot_dispatchers.update({bot_token[0]: bot_dispatcher})
+        #            logger.debug('chattree_bot_dispatchers: {0}'.format(chattree_bot_dispatchers))
+        #        except TelegramError as e:
+        #            raise e
 
-    #def ready(self):
-    #   pass
+    def ready(self):
+       pass
 

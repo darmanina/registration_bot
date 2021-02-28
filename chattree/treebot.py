@@ -52,13 +52,17 @@ def save_message_history(user, message, chat_node_pk, bot_pk):
         # logger.debug('hasattr(user, "username"): {0}'.format(hasattr(user, 'username')))
         last_name = getattr(user, 'last_name', None)
 
-        event_args = {'user_id': user.id,
-                  'user_first_name': user.first_name,
-                  'message': message,
-                  'last_name': last_name,
-                  'username': username,
-                  'language_code': user.language_code,
-                  'chat_id': message.chat.id,
+        event_args = {'user_id': str(user.id),
+                      
+                      'event_properties': {
+                        'user_first_name': user.first_name,
+                        'message': str(message.text),
+                        'last_name': last_name,
+                        'username': username,
+                        'language_code': str(user.language_code),
+                        'chat_id': str(message.chat.id), },
+
+                      'event_type': 'outgoing_message',
                   }
         #              user_id='.'.join([user.id, user.first_name, ]),
 
@@ -69,6 +73,8 @@ def save_message_history(user, message, chat_node_pk, bot_pk):
         amplitude_logger.log_event(event)
     except Exception as e:
         logger.debug(e)
+    else:
+        logger.debug('event: {0}'.format(event))
 
     return
     logger.debug('===== save_message_history: START =====')
